@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/screens/page_2_screen.dart';
 
 class TodoScreen extends StatefulWidget {
   const TodoScreen({Key? key}) : super(key: key);
@@ -39,6 +40,13 @@ class _TodoScreenState extends State<TodoScreen> {
         ),
       ),
     );
+
+    todoItemList.add(ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, "/page2",
+              arguments: PageParameter(title: "From Home"));
+        },
+        child: const Text("Go Page 2")));
 
     for (var i = 0; i < todoList.length; i++) {
       todoItemList.add(

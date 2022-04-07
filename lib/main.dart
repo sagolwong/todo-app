@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/screens/page_2_screen.dart';
 import 'package:todo/screens/todo_screen.dart';
 
 void main() {
@@ -10,10 +11,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: TodoScreen(),
+      routes: <String, WidgetBuilder>{"/": (context) => const TodoScreen()},
+      onGenerateRoute: (RouteSettings settings) {
+        if (settings.name == "/page2") {
+          PageParameter args = settings.arguments as PageParameter;
+          return MaterialPageRoute(builder: (context) {
+            return Page2Screen(
+              title: args.title,
+            );
+          });
+        }
+      },
     );
   }
 }
