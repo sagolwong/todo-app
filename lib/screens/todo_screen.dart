@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/page_2_screen.dart';
+
+class TodoParameters {
+  final String title;
+
+  TodoParameters({required this.title});
+}
 
 class TodoScreen extends StatefulWidget {
-  const TodoScreen({Key? key}) : super(key: key);
+  final String title;
+  const TodoScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   State<TodoScreen> createState() => _TodoScreenState();
@@ -16,7 +22,7 @@ class _TodoScreenState extends State<TodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Todo"),
+        title: Text(widget.title + " - Todo List"),
       ),
       body: ListView(children: _itemList()),
     );
@@ -41,18 +47,12 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
     );
 
-    todoItemList.add(ElevatedButton(
-        onPressed: () {
-          Navigator.pushNamed(context, "/page2",
-              arguments: PageParameter(title: "From Home"));
-        },
-        child: const Text("Go Page 2")));
-
     for (var i = 0; i < todoList.length; i++) {
       todoItemList.add(
         ListTile(
           leading: const Icon(Icons.star, color: Colors.blue),
           title: Text(todoList[i]),
+          subtitle: Text(widget.title),
           trailing: IconButton(
             onPressed: () {
               setState(() {

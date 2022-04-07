@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/page_2_screen.dart';
+import 'package:todo/screens/category_screen.dart';
 import 'package:todo/screens/todo_screen.dart';
 
 void main() {
@@ -13,13 +13,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      routes: <String, WidgetBuilder>{"/": (context) => const TodoScreen()},
+      title: 'Todo App',
+      routes: <String, WidgetBuilder>{"/": (context) => const CategoryScreen()},
       onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == "/page2") {
-          PageParameter args = settings.arguments as PageParameter;
+        if (settings.name == "/todo") {
+          TodoParameters args = settings.arguments as TodoParameters;
           return MaterialPageRoute(builder: (context) {
-            return Page2Screen(
+            return TodoScreen(
               title: args.title,
             );
           });
