@@ -28,12 +28,22 @@ class _TodoScreenState extends State<TodoScreen> {
       appBar: AppBar(
         title: Text(widget.title + " - Todo List"),
       ),
-      body: ListView(children: _itemList()),
+      body: FutureBuilder(
+        future: _firebaseProvider.getTodoList(widget.title),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+                children: _itemList(context, snapshot.data as List<TodoItem>));
+          }
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 
-  List<Widget> _itemList() {
+  List<Widget> _itemList(BuildContext context, List<TodoItem> _todoList) {
     List<Widget> todoItemList = [];
+    todoList = _todoList;
 
     todoItemList.add(
       Container(
@@ -57,16 +67,16 @@ class _TodoScreenState extends State<TodoScreen> {
       ),
     );
 
-    for (var i = 0; i < todoList.length; i++) {
+    for (var todoItem in todoList) {
       todoItemList.add(
         ListTile(
           leading: const Icon(Icons.star, color: Colors.blue),
-          title: Text(todoList[i].text),
+          title: Text(todoItem.text),
           subtitle: Text(widget.title),
           trailing: IconButton(
             onPressed: () {
               setState(() {
-                todoList.removeAt(i);
+                todoList.remove(todoItem);
               });
             },
             icon: const Icon(Icons.delete),
