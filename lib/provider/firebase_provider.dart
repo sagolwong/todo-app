@@ -35,6 +35,19 @@ class FirebaseProvider {
     }
   }
 
+  Future<bool> editTodo(String categoryName, TodoItem todo) async {
+    try {
+      await FirebaseDatabase.instance
+          .ref(categoryName)
+          .child(todo.id)
+          .update({"text": todo.text});
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   Future<bool> deleteTodo(String categoryName, TodoItem todo) async {
     try {
       await FirebaseDatabase.instance.ref(categoryName).child(todo.id).remove();
