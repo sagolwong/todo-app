@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo/models/todo.dart';
+import 'package:todo/provider/firebase_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class TodoParameters {
   final String title;
@@ -16,7 +19,8 @@ class TodoScreen extends StatefulWidget {
 
 class _TodoScreenState extends State<TodoScreen> {
   final _textController = TextEditingController();
-  List<String> todoList = [];
+  final _firebaseProvider = FirebaseProvider();
+  List<TodoItem> todoList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +40,14 @@ class _TodoScreenState extends State<TodoScreen> {
         margin: const EdgeInsets.all(10),
         child: TextField(
           controller: _textController,
-          onSubmitted: ((value) {
-            todoList.add(value);
+          onSubmitted: ((value) async {
+            TodoItem todo = TodoItem(id: const Uuid().v4(), text: value);
+            bool isCreatedSuccess =
+                await _firebaseProvider.createTodoItem(widget.title, todo);
+
+            if (isCreatedSuccess) {
+              todoList.add(todo);
+            }
 
             setState(() {
               _textController.clear();
@@ -51,7 +61,7 @@ class _TodoScreenState extends State<TodoScreen> {
       todoItemList.add(
         ListTile(
           leading: const Icon(Icons.star, color: Colors.blue),
-          title: Text(todoList[i]),
+          title: Text(todoList[i].text),
           subtitle: Text(widget.title),
           trailing: IconButton(
             onPressed: () {
