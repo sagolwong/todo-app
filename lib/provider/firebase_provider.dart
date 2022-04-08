@@ -34,4 +34,14 @@ class FirebaseProvider {
       return false;
     }
   }
+
+  Future<bool> deleteTodo(String categoryName, TodoItem todo) async {
+    try {
+      await FirebaseDatabase.instance.ref(categoryName).child(todo.id).remove();
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 }

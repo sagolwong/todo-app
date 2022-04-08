@@ -74,10 +74,15 @@ class _TodoScreenState extends State<TodoScreen> {
           title: Text(todoItem.text),
           subtitle: Text(widget.title),
           trailing: IconButton(
-            onPressed: () {
-              setState(() {
-                todoList.remove(todoItem);
-              });
+            onPressed: () async {
+              bool isDeleteSuccess =
+                  await _firebaseProvider.deleteTodo(widget.title, todoItem);
+
+              if (isDeleteSuccess) {
+                setState(() {
+                  todoList.remove(todoItem);
+                });
+              }
             },
             icon: const Icon(Icons.delete),
           ),
